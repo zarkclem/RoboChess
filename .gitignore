@@ -1,2 +1,21 @@
 .claude/
 .DS_Store
+
+# Python
+__pycache__/
+*.pyc
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+
+# ROS 2 / colcon
+ros2_ws/build/
+ros2_ws/install/
+ros2_ws/log/
+
+# Calibration persistée à l'exécution (research.md §3) — pas versionnée
+ros2_ws/src/robochess_vision/config/calibration.yaml
+
+# Secrets locaux
+ros2_ws/.env

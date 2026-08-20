@@ -29,9 +29,9 @@ Workspace ROS 2 à deux packages, cf. `plan.md` § Project Structure : `ros2_ws/
 
 **Purpose**: Initialisation du workspace et des deux packages
 
-- [ ] T001 Créer le squelette des deux packages ROS 2 (`package.xml`, `setup.py`, `__init__.py`) pour `ros2_ws/src/robochess_vision/` et `ros2_ws/src/robochess_web/` selon la structure de `plan.md`
-- [ ] T002 [P] Créer un venv Python dédié au workspace et déclarer les dépendances (`opencv-python`, `fastapi`, `uvicorn`, `pyyaml`, `pytest`) dans `ros2_ws/requirements.txt` (Principe III — isolation des dépendances)
-- [ ] T003 [P] Documenter un `ROS_DOMAIN_ID` dédié au projet dans `ros2_ws/.env.example` (Principe III — pas d'interférence avec le graphe ROS2 d'un autre utilisateur)
+- [X] T001 Créer le squelette des deux packages ROS 2 (`package.xml`, `setup.py`, `__init__.py`) pour `ros2_ws/src/robochess_vision/` et `ros2_ws/src/robochess_web/` selon la structure de `plan.md`
+- [X] T002 [P] Créer un venv Python dédié au workspace et déclarer les dépendances (`opencv-python`, `fastapi`, `uvicorn`, `pyyaml`, `pytest`) dans `ros2_ws/requirements.txt` (Principe III — isolation des dépendances)
+- [X] T003 [P] Documenter un `ROS_DOMAIN_ID` dédié au projet dans `ros2_ws/.env.example` (Principe III — pas d'interférence avec le graphe ROS2 d'un autre utilisateur)
 
 ---
 
@@ -41,11 +41,11 @@ Workspace ROS 2 à deux packages, cf. `plan.md` § Project Structure : `ros2_ws/
 
 **⚠️ CRITICAL**: Aucune user story ne peut être testée avant la fin de cette phase
 
-- [ ] T004 Implémenter `compute_grid(corner_points) -> list[Square]` (homographie 4 points → 64 régions image + régions de profondeur resserrées, rejet des quadrilatères dégénérés — research.md §1-2, data-model.md) dans `ros2_ws/src/robochess_vision/robochess_vision/grid_mapping.py`
-- [ ] T005 [P] Tests unitaires de `compute_grid` (4 points valides → 64 cases correctement dérivées ; points quasi alignés/trop proches → rejet, FR-006) dans `ros2_ws/src/robochess_vision/test/test_grid_mapping.py`
-- [ ] T006 Implémenter `calibration_node.py` : node `rclpy` détenant la `Calibration` en mémoire (machine à états `draft`/`confirmed`, ordre de saisie des coins a1→h1→a8→h8) avec les opérations `start_draft`/`add_point`/`confirm`/`discard` (data-model.md) dans `ros2_ws/src/robochess_vision/robochess_vision/calibration_node.py`
-- [ ] T007 Implémenter le squelette FastAPI (`app.py`) montant le router de calibration et le dossier `static/`, plus le pont client `rclpy` vers `calibration_node` (research.md §4) dans `ros2_ws/src/robochess_web/robochess_web/app.py`
-- [ ] T008 [P] Ébaucher `static/calibration/index.html` et `calibration.js` (affichage du flux caméra en direct, gestionnaire de clic minimal, sans appel API pour l'instant) dans `ros2_ws/src/robochess_web/robochess_web/static/calibration/`
+- [X] T004 Implémenter `compute_grid(corner_points) -> list[Square]` (homographie 4 points → 64 régions image + régions de profondeur resserrées, rejet des quadrilatères dégénérés — research.md §1-2, data-model.md) dans `ros2_ws/src/robochess_vision/robochess_vision/grid_mapping.py`
+- [X] T005 [P] Tests unitaires de `compute_grid` (4 points valides → 64 cases correctement dérivées ; points quasi alignés/trop proches → rejet, FR-006) dans `ros2_ws/src/robochess_vision/test/test_grid_mapping.py`
+- [X] T006 Implémenter `calibration_node.py` : node `rclpy` détenant la `Calibration` en mémoire (machine à états `draft`/`confirmed`, ordre de saisie des coins a1→h1→a8→h8) avec les opérations `start_draft`/`add_point`/`confirm`/`discard` (data-model.md) dans `ros2_ws/src/robochess_vision/robochess_vision/calibration_node.py`
+- [X] T007 Implémenter le squelette FastAPI (`app.py`) montant le router de calibration et le dossier `static/`, plus le pont client `rclpy` vers `calibration_node` (research.md §4) dans `ros2_ws/src/robochess_web/robochess_web/app.py`
+- [X] T008 [P] Ébaucher `static/calibration/index.html` et `calibration.js` (affichage du flux caméra en direct, gestionnaire de clic minimal, sans appel API pour l'instant) dans `ros2_ws/src/robochess_web/robochess_web/static/calibration/`
 
 **Checkpoint**: infrastructure prête — les user stories peuvent commencer.
 
@@ -57,14 +57,14 @@ Workspace ROS 2 à deux packages, cf. `plan.md` § Project Structure : `ros2_ws/
 
 **Independent Test**: Suivre `quickstart.md` étapes 1-3 : lancer le système, ouvrir la page de calibration, cliquer les 4 coins, vérifier l'overlay, confirmer, vérifier le rejet d'un quadrilatère dégénéré.
 
-- [ ] T009 [US1] Implémenter `POST /api/calibration/start` dans `ros2_ws/src/robochess_web/robochess_web/routers/calibration.py`
-- [ ] T010 [US1] Implémenter `POST /api/calibration/point` (collecte ordonnée des coins, `next_corner` dans la réponse — FR-002, calcul de `preview_grid` au 4e point, `422 degenerate_quadrilateral` si rejeté — FR-006) dans `ros2_ws/src/robochess_web/robochess_web/routers/calibration.py`
-- [ ] T011 [US1] Implémenter `POST /api/calibration/confirm` (exige 4 points valides, calcule les 64 `Square` finales via `grid_mapping`, promeut `draft` → `confirmed` — FR-007) dans `ros2_ws/src/robochess_web/robochess_web/routers/calibration.py`
-- [ ] T012 [US1] Implémenter `POST /api/calibration/discard` (FR-005) dans `ros2_ws/src/robochess_web/robochess_web/routers/calibration.py`
-- [ ] T013 [P] [US1] Tests des endpoints start/point/confirm/discard (y compris les cas d'erreur 422/409) dans `ros2_ws/src/robochess_web/test/test_calibration_router.py`
-- [ ] T014 [P] [US1] Implémenter le flux de clic UI : mise en évidence du prochain coin attendu (FR-002), envoi des clics à `/point`, rendu de l'overlay de grille retourné dans `ros2_ws/src/robochess_web/robochess_web/static/calibration/calibration.js`
-- [ ] T015 [P] [US1] Implémenter les contrôles UI de confirmation/annulation avec retour visuel (FR-004, FR-005) dans `ros2_ws/src/robochess_web/robochess_web/static/calibration/index.html`
-- [ ] T016 [US1] Afficher un avertissement clair dans l'UI si le flux caméra est indisponible pendant la séquence (`503 camera_unavailable`, FR-011) dans `ros2_ws/src/robochess_web/robochess_web/static/calibration/calibration.js`
+- [X] T009 [US1] Implémenter `POST /api/calibration/start` dans `ros2_ws/src/robochess_web/robochess_web/routers/calibration.py`
+- [X] T010 [US1] Implémenter `POST /api/calibration/point` (collecte ordonnée des coins, `next_corner` dans la réponse — FR-002, calcul de `preview_grid` au 4e point, `422 degenerate_quadrilateral` si rejeté — FR-006) dans `ros2_ws/src/robochess_web/robochess_web/routers/calibration.py`
+- [X] T011 [US1] Implémenter `POST /api/calibration/confirm` (exige 4 points valides, calcule les 64 `Square` finales via `grid_mapping`, promeut `draft` → `confirmed` — FR-007) dans `ros2_ws/src/robochess_web/robochess_web/routers/calibration.py`
+- [X] T012 [US1] Implémenter `POST /api/calibration/discard` (FR-005) dans `ros2_ws/src/robochess_web/robochess_web/routers/calibration.py`
+- [X] T013 [P] [US1] Tests des endpoints start/point/confirm/discard (y compris les cas d'erreur 422/409) dans `ros2_ws/src/robochess_web/test/test_calibration_router.py`
+- [X] T014 [P] [US1] Implémenter le flux de clic UI : mise en évidence du prochain coin attendu (FR-002), envoi des clics à `/point`, rendu de l'overlay de grille retourné dans `ros2_ws/src/robochess_web/robochess_web/static/calibration/calibration.js`
+- [X] T015 [P] [US1] Implémenter les contrôles UI de confirmation/annulation avec retour visuel (FR-004, FR-005) dans `ros2_ws/src/robochess_web/robochess_web/static/calibration/index.html`
+- [X] T016 [US1] Afficher un avertissement clair dans l'UI si le flux caméra est indisponible pendant la séquence (`503 camera_unavailable`, FR-011) dans `ros2_ws/src/robochess_web/robochess_web/static/calibration/calibration.js`
 
 **Checkpoint**: US1 livrable et testable seule — calibration manuelle complète sur une session.
 
@@ -76,8 +76,8 @@ Workspace ROS 2 à deux packages, cf. `plan.md` § Project Structure : `ros2_ws/
 
 **Independent Test**: Suivre `quickstart.md` étape 4 : après une calibration confirmée, déplacer légèrement la caméra, déclencher `/start`, confirmer une nouvelle calibration, vérifier que l'ancienne n'est plus utilisée.
 
-- [ ] T017 [US2] S'assurer que `start_draft()` dans `calibration_node.py` ne modifie pas la `Calibration` `confirmed` existante tant que le nouveau `confirm()` n'a pas réussi (remplacement atomique — FR-010) dans `ros2_ws/src/robochess_vision/robochess_vision/calibration_node.py`
-- [ ] T018 [P] [US2] Ajouter un contrôle "Recalibrer" persistant dans l'UI, visible dès qu'une calibration confirmée est active, déclenchant `POST /api/calibration/start` dans `ros2_ws/src/robochess_web/robochess_web/static/calibration/index.html`
+- [X] T017 [US2] S'assurer que `start_draft()` dans `calibration_node.py` ne modifie pas la `Calibration` `confirmed` existante tant que le nouveau `confirm()` n'a pas réussi (remplacement atomique — FR-010) dans `ros2_ws/src/robochess_vision/robochess_vision/calibration_node.py`
+- [X] T018 [P] [US2] Ajouter un contrôle "Recalibrer" persistant dans l'UI, visible dès qu'une calibration confirmée est active, déclenchant `POST /api/calibration/start` dans `ros2_ws/src/robochess_web/robochess_web/static/calibration/index.html`
 
 **Checkpoint**: US2 livrable et testable seule, par-dessus US1.
 
@@ -89,10 +89,10 @@ Workspace ROS 2 à deux packages, cf. `plan.md` § Project Structure : `ros2_ws/
 
 **Independent Test**: Suivre `quickstart.md` étape 5 : après une calibration confirmée, redémarrer le système, vérifier via `GET /api/calibration/status` que la calibration précédente est active sans repasser par la séquence de clics.
 
-- [ ] T019 [US3] Implémenter la persistance YAML : écrire la `Calibration` confirmée dans `ros2_ws/src/robochess_vision/config/calibration.yaml` à chaque confirmation (research.md §3, FR-009) dans `ros2_ws/src/robochess_vision/robochess_vision/calibration_node.py`
-- [ ] T020 [US3] Charger `config/calibration.yaml` au démarrage de `calibration_node.py` s'il existe, en restaurant l'état `confirmed` automatiquement (FR-009, SC-004) dans `ros2_ws/src/robochess_vision/robochess_vision/calibration_node.py`
-- [ ] T021 [P] [US3] Implémenter `GET /api/calibration/status` dans `ros2_ws/src/robochess_web/robochess_web/routers/calibration.py`
-- [ ] T022 [P] [US3] Au chargement de la page, appeler `/api/calibration/status` et passer directement à la vue "prêt à jouer" si `confirmed`, en proposant "Recalibrer" plutôt que d'imposer la séquence de clics dans `ros2_ws/src/robochess_web/robochess_web/static/calibration/calibration.js`
+- [X] T019 [US3] Implémenter la persistance YAML : écrire la `Calibration` confirmée dans `ros2_ws/src/robochess_vision/config/calibration.yaml` à chaque confirmation (research.md §3, FR-009) dans `ros2_ws/src/robochess_vision/robochess_vision/calibration_node.py`
+- [X] T020 [US3] Charger `config/calibration.yaml` au démarrage de `calibration_node.py` s'il existe, en restaurant l'état `confirmed` automatiquement (FR-009, SC-004) dans `ros2_ws/src/robochess_vision/robochess_vision/calibration_node.py`
+- [X] T021 [P] [US3] Implémenter `GET /api/calibration/status` dans `ros2_ws/src/robochess_web/robochess_web/routers/calibration.py`
+- [X] T022 [P] [US3] Au chargement de la page, appeler `/api/calibration/status` et passer directement à la vue "prêt à jouer" si `confirmed`, en proposant "Recalibrer" plutôt que d'imposer la séquence de clics dans `ros2_ws/src/robochess_web/robochess_web/static/calibration/calibration.js`
 
 **Checkpoint**: US3 livrable et testable seule, par-dessus US1 (+ US2 si présente).
 
@@ -100,7 +100,7 @@ Workspace ROS 2 à deux packages, cf. `plan.md` § Project Structure : `ros2_ws/
 
 ## Phase 6: Polish & Cross-Cutting Concerns
 
-- [ ] T023 [P] Ajouter un launch file démarrant `robochess_vision` + `robochess_web` ensemble, avec libération propre de la caméra à l'arrêt (Principe III) dans `ros2_ws/src/robochess_vision/launch/calibration.launch.py`
+- [X] T023 [P] Ajouter un launch file démarrant `robochess_vision` + `robochess_web` ensemble, avec libération propre de la caméra à l'arrêt (Principe III) dans `ros2_ws/src/robochess_vision/launch/calibration.launch.py`
 - [ ] T024 [P] Exécuter le protocole de validation manuelle complet de `specs/001-board-calibration/quickstart.md` sur le matériel réel (deux plateaux visuellement différents) et consigner les résultats face à SC-001–SC-005 dans `specs/001-board-calibration/quickstart.md`
 
 ---
