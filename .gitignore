@@ -14,6 +14,8 @@ venv/
 ros2_ws/build/
 ros2_ws/install/
 ros2_ws/log/
+# idem si colcon/rosdep est lancé par erreur depuis la racine du repo
+/log/
 
 # Dépendances tierces clonées directement dans le workspace (pas vendorées) —
 # voir quickstart.md pour la commande de clone.
