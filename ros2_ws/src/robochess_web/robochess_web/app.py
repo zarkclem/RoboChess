@@ -7,17 +7,19 @@ from pathlib import Path
 from typing import Optional
 
 import rclpy
+from ament_index_python.packages import get_package_share_directory
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
 from robochess_vision.calibration_node import CalibrationNode
 
-from .routers import calibration
+from .routers import calibration, camera
 
-STATIC_DIR = Path(__file__).resolve().parent / "static"
+STATIC_DIR = Path(get_package_share_directory("robochess_web")) / "static"
 
 app = FastAPI(title="RoboChess - Calibration")
 app.include_router(calibration.router, prefix="/api/calibration", tags=["calibration"])
+app.include_router(camera.router, tags=["camera"])
 app.mount(
     "/calibration",
     StaticFiles(directory=STATIC_DIR / "calibration", html=True),
@@ -34,6 +36,7 @@ def start_calibration_node() -> None:
     rclpy.init()
     _node = CalibrationNode()
     calibration.set_backend(_node.state)
+    camera.set_backend(_node.camera_feed)
     _ros_thread = threading.Thread(target=rclpy.spin, args=(_node,), daemon=True)
     _ros_thread.start()
 

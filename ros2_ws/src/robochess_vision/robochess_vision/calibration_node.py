@@ -14,14 +14,28 @@ from __future__ import annotations
 from typing import Optional
 
 from rclpy.node import Node
+from rclpy.qos import qos_profile_sensor_data
+from sensor_msgs.msg import Image
 
 from .calibration_state import CalibrationState
+from .camera_feed import LiveFrameBuffer
+
+# Topic par défaut de zed-ros2-wrapper pour camera_name='zed', node_name='zed_node'
+# (zed_camera.launch.py) — voir calibration.launch.py qui lance le node avec ces valeurs.
+RGB_IMAGE_TOPIC = "/zed/zed_node/rgb/color/rect/image"
 
 
 class CalibrationNode(Node):
     def __init__(self, state: Optional[CalibrationState] = None) -> None:
         super().__init__("robochess_calibration_node")
         self.state = state or CalibrationState()
+        self.camera_feed = LiveFrameBuffer()
+        self._image_sub = self.create_subscription(
+            Image, RGB_IMAGE_TOPIC, self._on_image, qos_profile_sensor_data
+        )
+
+    def _on_image(self, msg: Image) -> None:
+        self.camera_feed.on_image_message(msg.width, msg.height, msg.step, msg.encoding, bytes(msg.data))
 
 
 def main(args: Optional[list] = None) -> None:

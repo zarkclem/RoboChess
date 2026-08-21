@@ -8,6 +8,8 @@
   <license>TODO</license>
 
   <depend>rclpy</depend>
+  <depend>sensor_msgs</depend>
+  <exec_depend>zed_wrapper</exec_depend>
 
   <test_depend>python3-pytest</test_depend>
 

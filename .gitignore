@@ -15,6 +15,11 @@ ros2_ws/build/
 ros2_ws/install/
 ros2_ws/log/
 
+# Dépendances tierces clonées directement dans le workspace (pas vendorées) —
+# voir quickstart.md pour la commande de clone.
+ros2_ws/src/zed-ros2-wrapper/
+ros2_ws/src/zed-ros2-interfaces/
+
 # Calibration persistée à l'exécution (research.md §3) — pas versionnée
 ros2_ws/src/robochess_vision/config/calibration.yaml
 

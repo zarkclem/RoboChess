@@ -10,6 +10,7 @@ setup(
         ("share/ament_index/resource_index/packages", [f"resource/{package_name}"]),
         (f"share/{package_name}", ["package.xml"]),
         (f"share/{package_name}/launch", ["launch/calibration.launch.py"]),
+        (f"share/{package_name}/config", ["config/zed_params_override.yaml"]),
     ],
     install_requires=["setuptools", "opencv-python", "pyyaml"],
     zip_safe=True,

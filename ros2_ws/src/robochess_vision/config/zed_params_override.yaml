@@ -1,0 +1,12 @@
+# Surcharge des paramètres par défaut de zed_wrapper pour l'usage calibration :
+# on n'a besoin que du flux RGB rectifié, pas de la profondeur. depth_mode='NONE'
+# désactive automatiquement le positional tracking et les modules qui en
+# dépendent (sinon pos_tracking_enabled=false seul est ignoré : le wrapper le
+# réactive de force tant que depth_stabilization est actif, et le node reste
+# bloqué à attendre un TF que publish_tf=false ne fournira jamais). Ça évite
+# aussi l'optimisation du modèle IA de profondeur (~6 min) au démarrage.
+---
+/**:
+    ros__parameters:
+        depth:
+            depth_mode: 'NONE'
