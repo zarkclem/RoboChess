@@ -1,4 +1,5 @@
 .claude/
+.agents/
 .DS_Store
 
 # Python

@@ -11,6 +11,18 @@ Sync Impact Report
   - Governance
 - Removed sections: n/a
 - Deferred TODOs: none — RATIFICATION_DATE set from session date; revisit stack choices in /speckit-plan.
+
+Sync Impact Report — 1.0.0 → 1.0.1 (2026-08-21)
+- Modified: Contraintes Matérielles & Stack Technique — "ROS 2 (Humble)" → "ROS 2 (Jazzy Jalisco)".
+  Raison : inspection réelle de la Jetson cible (via VS Code Remote-SSH) a révélé JetPack 7 /
+  L4T R39 / Ubuntu 24.04 "Noble", incompatible avec ROS 2 Humble (qui ne cible que Ubuntu 22.04
+  "Jammy"). Jazzy Jalisco est la distro officiellement ciblée pour Ubuntu 24.04. Aucun principe
+  modifié — la section stack précise déjà qu'elle est "réévaluée en détail lors de /speckit-plan" ;
+  ceci est une correction factuelle, pas un changement d'intention.
+- Removed sections: n/a
+- Deferred TODOs: vérifier la compatibilité Jazzy de `xarm_ros2` et `zed-ros2-wrapper` quand ces
+  features seront planifiées (non bloquant pour la feature de calibration du plateau, qui n'utilise
+  ni l'un ni l'autre).
 -->
 
 # RoboChess Constitution
@@ -65,13 +77,16 @@ une heuristique maison qui dégraderait artificiellement la qualité de jeu.
 
 ## Contraintes Matérielles & Stack Technique
 
-- Matériel fixe : Jetson Orin 64GB (JetPack/Ubuntu, aarch64) ; bras UFACTORY Lite 6 avec pince ;
-  caméra ZED X (GMSL2/FAKRA) ; plateau de test = tapis souple 5.5cm/case, lettré/chiffré, pièces
-  en bois — mais le logiciel DOIT rester utilisable avec un autre échiquier (voir Principe I).
-- Stack cœur : ROS 2 (Humble) + MoveIt2 comme middleware et planification ; `xarm_ros2` (driver
-  officiel UFACTORY) pour le bras ; `zed-ros2-wrapper` pour la caméra ; Stockfish piloté via
-  `python-chess` comme moteur de jeu ; interface web légère (FastAPI + HTML/JS) pour la sélection
-  de difficulté et le suivi de partie, accessible en Wi-Fi local depuis Mac ou téléphone.
+- Matériel fixe : Jetson Orin 64GB (JetPack 7 / L4T R39, Ubuntu 24.04 "Noble", aarch64) ; bras
+  UFACTORY Lite 6 avec pince ; caméra ZED X (GMSL2/FAKRA) ; plateau de test = tapis souple
+  5.5cm/case, lettré/chiffré, pièces en bois — mais le logiciel DOIT rester utilisable avec un
+  autre échiquier (voir Principe I).
+- Stack cœur : ROS 2 (Jazzy Jalisco — distro officiellement ciblée pour Ubuntu 24.04) + MoveIt2
+  comme middleware et planification ; `xarm_ros2` (driver officiel UFACTORY) pour le bras ;
+  `zed-ros2-wrapper` pour la caméra ; Stockfish piloté via `python-chess` comme moteur de jeu ;
+  interface web légère (FastAPI + HTML/JS) pour la sélection de difficulté et le suivi de partie,
+  accessible en Wi-Fi local depuis Mac ou téléphone. La compatibilité Jazzy de `xarm_ros2` et
+  `zed-ros2-wrapper` reste à vérifier lors de la planification des features bras/caméra réelle.
 - Ces choix de stack sont réévalués en détail lors de `/speckit-plan`, mais les contraintes
   matérielles et les principes ci-dessus sont fixes.
 
@@ -99,4 +114,4 @@ revue de plan (`/speckit-plan`) ou de tâches (`/speckit-tasks`) DOIT vérifier 
 principes ci-dessus ; toute dérogation doit être justifiée explicitement dans le document
 concerné plutôt que silencieusement ignorée.
 
-**Version**: 1.0.0 | **Ratified**: 2026-08-20 | **Last Amended**: 2026-08-20
+**Version**: 1.0.1 | **Ratified**: 2026-08-20 | **Last Amended**: 2026-08-21

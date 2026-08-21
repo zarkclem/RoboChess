@@ -10,15 +10,15 @@ L'opérateur désigne les quatre coins internes du plateau (a1, h1, a8, h8) en c
 
 ## Technical Context
 
-**Language/Version**: Python 3.10 (version fournie par JetPack/Ubuntu 22.04 sous ROS 2 Humble)
+**Language/Version**: Python 3.12 (version fournie par JetPack 7/Ubuntu 24.04 sous ROS 2 Jazzy Jalisco — corrigé le 2026-08-21 après inspection réelle de la Jetson cible, qui tourne JetPack 7/Ubuntu 24.04 "Noble" et non 22.04/Humble comme supposé initialement ; voir constitution v1.0.1)
 
-**Primary Dependencies**: ROS 2 Humble (rclpy), `zed-ros2-wrapper` (flux image + profondeur de la ZED X), OpenCV (`cv2.getPerspectiveTransform` / calcul d'homographie et de régions de case — nouvelle dépendance légère, cohérente avec le traitement d'image déjà requis, à confirmer en Phase 0), FastAPI (endpoints de calibration + page HTML/JS de clic sur l'image)
+**Primary Dependencies**: ROS 2 Jazzy Jalisco (rclpy), `zed-ros2-wrapper` (flux image + profondeur de la ZED X — compatibilité Jazzy à vérifier, non utilisé par cette feature), OpenCV (`cv2.getPerspectiveTransform` / calcul d'homographie et de régions de case — nouvelle dépendance légère, cohérente avec le traitement d'image déjà requis, à confirmer en Phase 0), FastAPI (endpoints de calibration + page HTML/JS de clic sur l'image)
 
 **Storage**: fichier de configuration local (YAML), un par calibration active, sur le système de fichiers du Jetson — pas de base de données (choix confirmé en Phase 0)
 
 **Testing**: pytest pour la logique pure (calcul de grille à partir de 4 points, validation de quadrilatère) ; validation manuelle guidée (`quickstart.md`) pour les scénarios nécessitant la caméra physique, non automatisable en CI
 
-**Target Platform**: Jetson Orin 64GB (JetPack/Ubuntu, aarch64) ; interface consultée via navigateur (Mac ou téléphone) sur le Wi-Fi local — aucune exécution CUDA/ROS2/ZED côté client
+**Target Platform**: Jetson Orin 64GB (JetPack 7, Ubuntu 24.04, aarch64) ; interface consultée via navigateur (Mac ou téléphone) sur le Wi-Fi local — aucune exécution CUDA/ROS2/ZED côté client
 
 **Project Type**: service web + package ROS 2, au sein d'un workspace ROS 2 partagé par les futures features du projet
 
